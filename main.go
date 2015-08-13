@@ -27,14 +27,17 @@ func main() {
 		return
 	}
 
-	ignorePattern, err := regexp.Compile(ignore)
-	if err != nil {
-		fmt.Printf("invalid regexp=%s: %s\n", ignore, err)
-		return
+	var ignorePattern *regexp.Regexp
+	if ignore != "" {
+		ignorePattern, err = regexp.Compile(ignore)
+		if err != nil {
+			fmt.Printf("invalid regexp=%s: %s\n", ignore, err)
+			return
+		}
 	}
 
 	for _, branch := range branches {
-		if ignorePattern.MatchString(branch) {
+		if ignorePattern != nil && ignorePattern.MatchString(branch) {
 			return
 		}
 
