@@ -9,17 +9,26 @@ import (
 	"strings"
 )
 
+var version string
+
 func main() {
 	var (
-		dryrun bool
-		remote bool
-		ignore string
+		dryrun      bool
+		remote      bool
+		ignore      string
+		showVersion bool
 	)
 
 	flag.BoolVar(&dryrun, "dryrun", false, "run as dryrun")
 	flag.BoolVar(&remote, "remote", false, "delete branches on remote, too")
 	flag.StringVar(&ignore, "ignore", "", "regexp pattern to ignore")
+	flag.BoolVar(&showVersion, "version", false, "display version of this command")
 	flag.Parse()
+
+	if showVersion {
+		fmt.Printf("version: %s\n", version)
+		return
+	}
 
 	branches, err := listMergedBranches()
 	if err != nil {
